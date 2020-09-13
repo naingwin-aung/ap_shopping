@@ -11,7 +11,7 @@
  }
 
   if($_POST) {
-   if(empty($_POST['name']) || empty($_POST['email']) || empty($_POST['password']) || strlen($_POST['password']) < 4) {
+   if(empty($_POST['name']) || empty($_POST['email']) || empty($_POST['password'])) {
       if(empty($_POST['name'])) {
         $nameError = 'Name cannot be null';
       }
@@ -22,12 +22,10 @@
 
       if(empty($_POST['password'])) {
          $passwordError = 'Password cannot be null';
-       }
+       }elseif(strlen($_POST['password']) < 4) {
+         $passwordError = "Password should be 4 character at least";
+      }
        
-       if(strlen($_POST['password']) < 4) {
-          $passwordError = "Password should be 4 character at least";
-       } 
-
     } else {
        $password = password_hash($_POST['password'],PASSWORD_DEFAULT);
      if(empty($_POST['role'])) {

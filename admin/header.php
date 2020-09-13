@@ -42,25 +42,27 @@ scratch. This page gets rid of all links and provides the needed markup only.
     ?>
 
     <!-- SEARCH FORM -->
-    <form class="form-inline ml-3" method="POST"
-      <?php if($page == 'index.php') : ?>
-        action = "index.php";
-      <?php elseif($page == 'category.php'):?>
-        action = "category.php";
-      <?php elseif($page == 'user.php'):?>
-        action = "user.php";
-      <?php endif; ?>
-    >
-    <input name="_token" type="hidden" value="<?php echo $_SESSION['_token']; ?>">
-      <div class="input-group input-group-sm">
-        <input name="search" class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-        <div class="input-group-append">
-          <button class="btn btn-navbar" type="submit">
-            <i class="fas fa-search"></i>
-          </button>
+    <?php if($page != 'order.php') : ?>
+      <form class="form-inline ml-3" method="POST"
+        <?php if($page == 'index.php') : ?>
+          action = "index.php";
+        <?php elseif($page == 'category.php'):?>
+          action = "category.php";
+        <?php elseif($page == 'user.php'):?>
+          action = "user.php";
+        <?php endif; ?>
+      >
+      <input name="_token" type="hidden" value="<?php echo $_SESSION['_token']; ?>">
+        <div class="input-group input-group-sm">
+          <input name="search" class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+          <div class="input-group-append">
+            <button class="btn btn-navbar" type="submit">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+    <?php endif; ?>
   
   </nav>
   <!-- /.navbar -->
@@ -111,6 +113,16 @@ scratch. This page gets rid of all links and provides the needed markup only.
               </p>
             </a>
           </li>
+
+          <li class="nav-item">
+            <a href="/admin/order.php" class="nav-link">
+              <i class="nav-icon fas fa-table"></i>
+              <p>
+                Order 
+              </p>
+            </a>
+          </li>
+
           <li class="nav-item">
             <a href="/admin/user.php" class="nav-link">
               <i class="nav-icon fas fa-user"></i>

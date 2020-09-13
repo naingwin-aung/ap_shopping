@@ -29,7 +29,7 @@
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Category Listings</h3>
+                <h3 class="card-title">Order Listings</h3>
               </div>
               <!-- /.card-header -->
               <?php 
@@ -41,55 +41,36 @@
                 $numOfrecs = 4;
                 $offset = ($pageno -1) * $numOfrecs;
 
-                if(empty($_POST['search']) && empty($_COOKIE['search'])) {
-                    $stm = $pdo->prepare("
-                    SELECT * FROM categories ORDER BY id DESC
-                    ");
+                $stm = $pdo->prepare("
+                SELECT * FROM sale_order_detail WHERE sale_order_id=
+                ".$_GET['id']);
 
-                    if($stm->execute()) {
-                      $rawResult = $stm->fetchAll();
-                    }
-
-                    $total_pages = ceil(count($rawResult)/ $numOfrecs);
-
-                    $stm = $pdo->prepare("
-                      SELECT * FROM categories ORDER BY id DESC LIMIT $offset,$numOfrecs
-                    ");
-
-                    if($stm->execute()) {
-                      $result = $stm->fetchAll();
-                    }
-                } else {
-                    $searchKey = !empty($_POST['search']) ? $_POST['search'] : $_COOKIE['search'];
-                    $stm = $pdo->prepare("
-                    SELECT * FROM categories WHERE name LIKE '%$searchKey%' ORDER BY id DESC
-                    ");
-
-                    if($stm->execute()) {
-                      $rawResult = $stm->fetchAll();
-                    }
-
-                    $total_pages = ceil(count($rawResult)/ $numOfrecs);
-
-                    $stm = $pdo->prepare("
-                    SELECT * FROM categories WHERE name LIKE '%$searchKey%' ORDER BY id DESC LIMIT $offset,$numOfrecs
-                    ");
-
-                    if($stm->execute()) {
-                      $result = $stm->fetchAll();
-                    }
+                if($stm->execute()) {
+                  $rawResult = $stm->fetchAll();
                 }
-                
+
+                $total_pages = ceil(count($rawResult)/ $numOfrecs);
+
+                $stm = $pdo->prepare("
+                  SELECT * FROM sale_order_detail WHERE sale_order_id=".$_GET['id']." LIMIT $offset,$numOfrecs
+                ");
+
+                if($stm->execute()) {
+                  $result = $stm->fetchAll();
+                }
+                               
               ?>
               <div class="card-body">
-                <a href="cat_add.php" type="button" class="btn btn-success mb-4">New Category</a>
+              <a href="order.php" class="btn btn-warning mb-3">Back</a>
                 <table class="table table-bordered">
                   <thead>                  
                     <tr>
+                    
                       <th style="width: 10px">#</th>
-                      <th>Name</th>
-                      <th>Description</th>
-                      <th style="width: 160px;">Actions</th>
+                      <th>Product</th>
+                      <th>Quantity</th>
+                      <th>Price</th>
+                      
                     </tr>
                   </thead>
                   <tbody>
@@ -98,16 +79,21 @@
                         <?php foreach($result as $results): ?>
                             <tr>
                                 <td><?php echo $i; ?></td>
-                                <td><?php echo escape($results['name'])?></td>
+                                <?php
+                                  $pstm = $pdo->prepare("
+                                    SELECT * FROM product WHERE id =
+                                  ".$results['product_id']);
+                                  if($pstm->execute()) {
+                                    $pResult = $pstm->fetch();
+                                  }
+                                ?>
+                                <td><?php echo escape($pResult['name'])?></td>
                                 <td>
-                                  <?php echo escape(substr($results['description'], 0, 58))?>
+                                  <?php echo escape($results['quantity'])?>
                                 </td>
                                 <td>
-                                  <a href="cat_edit.php?id=<?php echo $results['id'];?>" type="button" class="btn btn-warning">Edit</a>
-                                  <a href="cat_delete.php?id=<?php echo $results['id'];?>" 
-                                  onclick="return confirm('Are you sure you want to delete this item')"
-                                  type="button" class="btn btn-danger">Delete</a>
-                                </td>
+                                  <?php echo escape($pResult['price'])?>
+                                </td>                         
                             </tr>
                             <?php $i++; ?>
                       <?php endforeach; ?>
