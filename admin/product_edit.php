@@ -60,8 +60,8 @@
 
           $stm = $pdo->prepare("
             UPDATE product SET name=:name, description=:description, category_id=:category,
-            price=:price, quantity=:quantity, image=:image
-          ");
+            price=:price, quantity=:quantity, image=:image WHERE id = 
+          ". $_GET['id']);
           $stm->bindParam(":name", $name);
           $stm->bindParam(":description", $desc);
           $stm->bindParam(":category", $category);
@@ -82,8 +82,8 @@
 
           $stm = $pdo->prepare("
             UPDATE product SET name=:name, description=:description, category_id=:category,
-            price=:price, quantity=:quantity
-          ");
+            price=:price, quantity=:quantity WHERE id = 
+            ". $_GET['id'] );
           $stm->bindParam(":name", $name);
           $stm->bindParam(":description", $desc);
           $stm->bindParam(":category", $category);
