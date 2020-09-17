@@ -4,11 +4,11 @@
   require_once('../config/common.php');
 
   if(empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])) {
-    header("location: login.php");
+    header("location: /admin/login.php");
   }
 
   if($_SESSION['role'] != 1) {
-    header('location: login.php');
+    header('location: /admin/login.php');
   }
 
   if($_POST) {
@@ -87,6 +87,18 @@
                     <small>The user already have a password</small>
                     <p style="color:red;"><?php echo empty($passwordError) ? '' : '*'.$passwordError;?></p>
                     <input type="text" class="form-control" name="password">
+                  </div>
+
+                  <div class="form-group">  
+                    <label for="">Phone</label>
+                    <p style="color:red;"><?php echo empty($phoneError) ? '' : '*'.$phoneError;?></p>
+                    <input type="text" class="form-control" name="phone" value="<?php echo escape($result['phone'])?>">
+                  </div>
+
+                  <div class="form-group">  
+                    <label for="">Address</label>
+                    <p style="color:red;"><?php echo empty($addressError) ? '' : '*'.$addressError;?></p>
+                    <input type="text" class="form-control" name="address" value="<?php echo escape($result['address'])?>">
                   </div>
 
                   <?php if($result['role'] == 0): ?>

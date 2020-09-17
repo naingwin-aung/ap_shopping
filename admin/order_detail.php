@@ -4,11 +4,11 @@
   require_once('../config/common.php');
 
   if(empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])) {
-    header("location: login.php");
+    header("location: /admin/login.php");
   }
 
   if($_SESSION['role'] != 1) {
-    header('location: login.php');
+    header('location: /admin/login.php');
   }
   
   if(!empty($_POST['search'])) {

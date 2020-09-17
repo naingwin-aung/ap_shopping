@@ -1,29 +1,21 @@
-	<?php include('header.php') ?>
+    <?php include('header.php') ?>
 				<?php
 				
 					require_once('config/config.php');
-
-					if(!empty($_POST['search'])) {
-						setcookie('search',$_POST['search'], time() + (86400 * 30), "/");
-					} else {
-						if(empty($_GET['pageno'])) {
-							unset($_COOKIE['search']);
-							setcookie('search',null, -1, '/');
-						}
-					}
 
           if(!empty($_GET['pageno'])) {
             $pageno = $_GET['pageno'];
           } else {
             $pageno = 1;
           }
-          $numOfrecs = 2;
+          $numOfrecs = 3;
           $offset = ($pageno -1) * $numOfrecs;
 
-          if(empty($_POST['search']) && empty($_COOKIE['search'])){
+          if ($_GET) {
               $stm = $pdo->prepare("
-              SELECT * FROM product ORDER BY id DESC
+                SELECT * FROM product WHERE category_id = :id
               ");
+              $stm->bindParam(":id", $_GET['id']);
 
               if($stm->execute()) {
                 $rawResult = $stm->fetchAll();
@@ -32,32 +24,14 @@
               $total_pages = ceil(count($rawResult)/ $numOfrecs);
 
               $stm = $pdo->prepare("
-                SELECT * FROM product ORDER BY id DESC LIMIT $offset,$numOfrecs
+                SELECT * FROM product WHERE category_id = :id ORDER BY id DESC LIMIT $offset, $numOfrecs
               ");
+              $stm->bindParam(":id", $_GET['id']);
 
               if($stm->execute()) {
                 $result = $stm->fetchAll();
 							}
-          } else {
-              $searchKey = !empty($_POST['search']) ? $_POST['search'] : $_COOKIE['search'];
-              $stm = $pdo->prepare("
-              SELECT * FROM product WHERE name LIKE '%$searchKey%' ORDER BY id DESC
-              ");
-
-              if($stm->execute()) {
-                $rawResult = $stm->fetchAll();
-              }
-
-              $total_pages = ceil(count($rawResult)/ $numOfrecs);
-
-              $stm = $pdo->prepare("
-              SELECT * FROM product WHERE name LIKE '%$searchKey%' ORDER BY id DESC LIMIT $offset,$numOfrecs
-              ");
-
-              if($stm->execute()) {
-                $result = $stm->fetchAll();
-							}
-					}
+          }
           
 				?>
 				<div class="container">
@@ -143,3 +117,5 @@
 				</section>
 				<!-- End Best Seller -->
 <?php include('footer.php');?>
+
+  

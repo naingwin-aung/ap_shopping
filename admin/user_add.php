@@ -3,17 +3,26 @@
   require_once('../config/config.php');
    require_once('../config/common.php');
   if(empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])) {
-    header("location: login.php");
+    header("location: /admin/login.php");
   }
 
   if($_SESSION['role'] != 1) {
-   header('location: login.php');
+   header('location: /admin/login.php');
  }
 
   if($_POST) {
-   if(empty($_POST['name']) || empty($_POST['email']) || empty($_POST['password'])) {
+   if(empty($_POST['name']) || empty($_POST['email']) || empty($_POST['password']) || empty($_POST['phone'])
+   || empty($_POST['address'])) {
       if(empty($_POST['name'])) {
         $nameError = 'Name cannot be null';
+      }
+
+      if(empty($_POST['phone'])) {
+        $phoneError = 'Phone cannot be null';
+      }
+
+      if(empty($_POST['address'])) {
+        $addressError = 'Address cannot be null';
       }
 
       if(empty($_POST['email'])) {
@@ -83,6 +92,18 @@
                      <label for="">Password</label>
                      <p style="color:red;"><?php echo empty($passwordError) ? '' : '*'.$passwordError;?></p>
                      <input type="text" class="form-control" name="password">
+                     </div>
+
+                     <div class="form-group">
+                     <label for="">Phone</label>
+                     <p style="color:red;"><?php echo empty($phoneError) ? '' : '*'.$phoneError;?></p>
+                     <input type="text" class="form-control" name="phone">
+                     </div>
+
+                     <div class="form-group">
+                     <label for="">Address</label>
+                     <p style="color:red;"><?php echo empty($addressError) ? '' : '*'.$addressError;?></p>
+                     <input type="text" class="form-control" name="address">
                      </div>
 
                      <div class="form-group">

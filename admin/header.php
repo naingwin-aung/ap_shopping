@@ -41,6 +41,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       $page = end($link_array);
     ?>
 
+  <?php if($page == 'index.php' || $page== 'category.php' || $page == 'user.php') : ?>
     <!-- SEARCH FORM -->
     <?php if($page != 'order.php') : ?>
       <form class="form-inline ml-3" method="POST"
@@ -54,7 +55,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
       >
       <input name="_token" type="hidden" value="<?php echo $_SESSION['_token']; ?>">
         <div class="input-group input-group-sm">
-          <input name="search" class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+          <input name="search" class="form-control form-control-navbar" type="search"
+          placeholder="Search" aria-label="Search">
           <div class="input-group-append">
             <button class="btn btn-navbar" type="submit">
               <i class="fas fa-search"></i>
@@ -63,6 +65,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </div>
       </form>
     <?php endif; ?>
+  <?php endif; ?>
   
   </nav>
   <!-- /.navbar -->
@@ -72,7 +75,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link">
 
-      <img src="/admin/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
+      <img src="/admin/dist/img/AdminLTELogo.png" alt="AdminLTE Logo"
+      class="brand-image img-circle elevation-3"
 
            style="opacity: .8">
       <span class="brand-text font-weight-light">Apshopping</span>
