@@ -5,6 +5,7 @@ require_once 'config/config.php';
 require_once 'config/common.php';
 
 if ($_POST) {
+
 	$email = $_POST['email'];
 	$password = $_POST['password'];
 
@@ -22,7 +23,7 @@ if ($_POST) {
 			$_SESSION['user_id'] = $user['id'];
 			$_SESSION['user_name'] = $user['name'];
 			$_SESSION['logged_in'] = time();
-
+			
 			header("locationd: index.php");
 		}
 	} else {

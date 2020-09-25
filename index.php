@@ -1,6 +1,5 @@
 	<?php include('header.php') ?>
-				<?php
-				
+				<?php				
 					require_once('config/config.php');
 
 					if(!empty($_POST['search'])) {
@@ -21,8 +20,31 @@
           $offset = ($pageno -1) * $numOfrecs;
 
           if(empty($_POST['search']) && empty($_COOKIE['search'])){
+						if (!empty($_GET['category_id'])) {
+							$stm = $pdo->prepare("
+              SELECT * FROM product WHERE category_id=:id AND quantity_id > 0 ORDER BY id DESC
+              ");
+
+							$stm->bindParam(":id", $_GET['category_id']);
+
+              if($stm->execute()) {
+                $rawResult = $stm->fetchAll();
+              }
+
+              $total_pages = ceil(count($rawResult)/ $numOfrecs);
+
               $stm = $pdo->prepare("
-              SELECT * FROM product ORDER BY id DESC
+                SELECT * FROM product WHERE category_id=:id AND quantity > 0 ORDER BY id DESC LIMIT $offset,$numOfrecs
+							");
+							
+							$stm->bindParam(":id", $_GET['category_id']);
+
+              if($stm->execute()) {
+                $result = $stm->fetchAll();
+							}
+						} else {
+							$stm = $pdo->prepare("
+              SELECT * FROM product WHERE quantity > 0 ORDER BY id DESC
               ");
 
               if($stm->execute()) {
@@ -32,16 +54,18 @@
               $total_pages = ceil(count($rawResult)/ $numOfrecs);
 
               $stm = $pdo->prepare("
-                SELECT * FROM product ORDER BY id DESC LIMIT $offset,$numOfrecs
+                SELECT * FROM product WHERE quantity > 0 ORDER BY id DESC LIMIT $offset,$numOfrecs
               ");
 
               if($stm->execute()) {
                 $result = $stm->fetchAll();
 							}
+						}
+             
           } else {
               $searchKey = !empty($_POST['search']) ? $_POST['search'] : $_COOKIE['search'];
               $stm = $pdo->prepare("
-              SELECT * FROM product WHERE name LIKE '%$searchKey%' ORDER BY id DESC
+              SELECT * FROM product WHERE name LIKE '%$searchKey%' AND quantity > 0 ORDER BY id DESC
               ");
 
               if($stm->execute()) {
@@ -51,7 +75,8 @@
               $total_pages = ceil(count($rawResult)/ $numOfrecs);
 
               $stm = $pdo->prepare("
-              SELECT * FROM product WHERE name LIKE '%$searchKey%' ORDER BY id DESC LIMIT $offset,$numOfrecs
+							SELECT * FROM product WHERE name LIKE '%$searchKey%' AND quantity > 0 
+							ORDER BY id DESC LIMIT $offset,$numOfrecs
               ");
 
               if($stm->execute()) {
@@ -77,7 +102,7 @@
 									?>
 
 									<?php foreach($catResult as $val) : ?>
-										<a href="product_browser.php?id=<?php echo $val['id']; ?>">
+										<a href="index.php?category_id=<?php echo $val['id'] ?>">
 											<span class="lnr lnr-arrow-right"></span><?php echo escape($val['name']); ?>
 										</a>
 									<?php endforeach; ?>
@@ -123,15 +148,25 @@
 											<h6><?php echo escape($results['price']) ?></h6>
 										</div>
 										<div class="prd-bottom">
+										<form action="addtocart.php" method="POST">
 
-											<a href="" class="social-info">
+										<input name="_token" type="hidden" value="<?php echo $_SESSION['_token']; ?>">
+            				<input type="hidden" name="id" value="<?php echo escape($results['id']) ?>">
+            				<input type="hidden" name="qty" value="1">
+
+										<div class="social-info">
+											<button style="display:contents" class="social-info" type="submit">
 												<span class="ti-bag"></span>
-												<p class="hover-text">add to bag</p>
-											</a>
-											<a href="product_detail.php?id=<?php echo $results['id'] ?>" class="social-info">
-												<span class="lnr lnr-move"></span>
-												<p class="hover-text">view more</p>
-											</a>
+													<p class="hover-text" style="left: 20px;">add to bag</p>
+											</button>
+										</div>
+
+												<a href="product_detail.php?id=<?php echo $results['id'] ?>" class="social-info">
+													<span class="lnr lnr-move"></span>
+													<p class="hover-text">view more</p>
+												</a>
+
+										</form>
 										</div>
 									</div>
 								</div>
