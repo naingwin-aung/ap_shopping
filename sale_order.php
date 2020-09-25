@@ -4,6 +4,10 @@
 	require_once 'config/config.php';
 	require_once 'config/common.php';
 
+	if(empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])) {
+    header("location: login.php");
+  }
+
 	if (!empty($_SESSION['cart'])) {
 		$userid = $_SESSION['user_id'];
 	$total = 0;

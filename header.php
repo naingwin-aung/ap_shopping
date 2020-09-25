@@ -2,6 +2,10 @@
 		session_start();
 		
 		require_once 'config/common.php';
+
+		if(empty($_SESSION['user_id']) && empty($_SESSION['logged_in'])) {
+			header("location: login.php");
+		}
 ?>
 <!DOCTYPE html>
 <html lang="zxx" class="no-js">
@@ -90,8 +94,8 @@
 		<div class="container">
 			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
 				<div class="col-first">
-					<h1>Welcome</h1>
-
+					<h1>Welcome <?php echo ucfirst(escape($_SESSION['user_name'])) ?></h1>
+					<a href="logout.php" class="btn btn-secondary">Logout</a>
 				</div>
 			</div>
 		</div>

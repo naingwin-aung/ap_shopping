@@ -22,7 +22,7 @@
           if(empty($_POST['search']) && empty($_COOKIE['search'])){
 						if (!empty($_GET['category_id'])) {
 							$stm = $pdo->prepare("
-              SELECT * FROM product WHERE category_id=:id AND quantity_id > 0 ORDER BY id DESC
+              SELECT * FROM product WHERE category_id=:id AND quantity > 0 ORDER BY id DESC
               ");
 
 							$stm->bindParam(":id", $_GET['category_id']);
