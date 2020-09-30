@@ -21,6 +21,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
@@ -43,7 +44,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
   <?php if($page == 'index.php' || $page== 'category.php' || $page == 'user.php') : ?>
     <!-- SEARCH FORM -->
-    <?php if($page != 'order.php') : ?>
+    <?php if($page != 'order.php' && $page != 'weekly_report.php' && $page != 'monthly_report.php' && $page != 'royal_cus.php' && $page != 'best_seller.php') : ?>
       <form class="form-inline ml-3" method="POST"
         <?php if($page == 'index.php') : ?>
           action = "index.php";
@@ -134,6 +135,40 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 Users 
               </p>
             </a>
+          </li>
+
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              
+              <p>
+                Reports
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="weekly_report.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Weekly Report</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="monthly_report.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Monthly report</p>
+                </a>
+              </li><li class="nav-item">
+                <a href="royal_cus.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Royal Customer</p>
+                </a>
+              </li><li class="nav-item">
+                <a href="best_seller_item.php" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Best Seller</p>
+                </a>
+              </li>
+            </ul>
           </li>
         </ul>
       </nav>

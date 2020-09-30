@@ -29,7 +29,7 @@
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">User Listings</h3>
+                <h3 class="card-title">Product Listings</h3>
               </div>
         <?php 
           if(!empty($_GET['pageno'])) {

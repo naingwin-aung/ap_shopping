@@ -42,7 +42,14 @@
         $imageError = "Image is requried";
       }
     } else {
-      $file = 'images/'.($_FILES['image']['name']);
+      if ((is_numeric($_POST['quantity']) != 1)) {
+        $qtyError = 'Quantity should be integer value';
+      }
+      if ((is_numeric($_POST['price']) != 1)) {
+        $priceError = 'Price should be integer value';
+      }
+      if ($qtyError == null && $priceError == null) {
+        $file = 'images/'.($_FILES['image']['name']);
       $imageType = pathinfo($file, PATHINFO_EXTENSION);
 
       if($imageType != 'jpg' && $imageType != 'jpeg' && $imageType != 'png') {
@@ -71,6 +78,7 @@
         if ($stm->execute()) {
           header("location: index.php");
         }
+      }
       }
     }
   }

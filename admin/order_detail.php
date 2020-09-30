@@ -103,15 +103,15 @@
                 <div class="float-right">
                   <nav aria-label= "Page navigation example" class="mt-4">
                       <ul class="pagination">
-                          <li class="page-item"> <a href="?pageno=1" class="page-link">First</a></li>
+                          <li class="page-item"> <a href="?id=<?php echo $_GET['id'] ?>&pageno=1" class="page-link">First</a></li>
                           <li class="page-item <?php if($pageno <= 1){echo 'disabled';} ?>"> 
-                            <a href="<?php if($pageno <= 1){echo '#';} else {echo '?pageno='.($pageno-1);}?>" class="page-link">Previous</a>
+                            <a href="<?php if($pageno <= 1){echo '#';} else {echo "?id=".$_GET['id']."&pageno=".($pageno-1);}?>" class="page-link">Previous</a>
                           </li>
                           <li class="page-item"> <a href="#" class="page-link"><?php echo $pageno; ?></a></li>
                           <li class="page-item <?php if($pageno >= $total_pages){echo 'disabled';} ?>"> 
-                            <a href="<?php if($pageno >=$total_pages){echo '#';} else {echo '?pageno='.($pageno+1);}?>" class="page-link">Next</a>
+                            <a href="<?php if($pageno >=$total_pages){echo '#';} else {echo "?id=".$_GET['id']."&pageno=".($pageno+1);}?>" class="page-link">Next</a>
                           </li>
-                          <li class="page-item"> <a href="?pageno=<?php echo $total_pages; ?>" class="page-link">Last</a></li>
+                          <li class="page-item"> <a href="?id=<?php echo $_GET['id'] ?>&pageno=<?php echo $total_pages; ?>" class="page-link">Last</a></li>
                       </ul>
                   </nav>
                 </div>

@@ -42,58 +42,68 @@
         $imageError = "Image is requried";
       }
     } else {
-      if($_FILES['image']['name'] != null) {
-        $file = 'images/'.($_FILES['image']['name']);
-        $imageType = pathinfo($file, PATHINFO_EXTENSION);
+      if ((is_numeric($_POST['quantity']) != 1)) {
+        $qtyError = 'Quantity should be integer value';
+      }
+      if ((is_numeric($_POST['price']) != 1)) {
+        $priceError = 'Price should be integer value';
+      }
 
-        if($imageType != 'jpg' && $imageType != 'jpeg' && $imageType != 'png') {
-          echo "<script>alert('Image must be jpg, png, jpeg!')</script>";
-        }else {//image validation success
-          $name = $_POST['name'];
-          $desc = $_POST['description'];
-          $category = $_POST['category'];
-          $qty = $_POST['quantity'];
-          $price = $_POST['price'];
-          $image = $_FILES['image']['name'];
-
-          move_uploaded_file($_FILES['image']['tmp_name'], $file);
-
-          $stm = $pdo->prepare("
-            UPDATE product SET name=:name, description=:description, category_id=:category,
-            price=:price, quantity=:quantity, image=:image WHERE id = 
-          ". $_GET['id']);
-          $stm->bindParam(":name", $name);
-          $stm->bindParam(":description", $desc);
-          $stm->bindParam(":category", $category);
-          $stm->bindParam(":price", $price);
-          $stm->bindParam(":quantity", $qty);
-          $stm->bindParam(":image", $image);
-          
-          if ($stm->execute()) {
-            header("location: index.php");
+      if ($qtyError == null && $priceError == null) {
+        if($_FILES['image']['name'] != null) {
+          $file = 'images/'.($_FILES['image']['name']);
+          $imageType = pathinfo($file, PATHINFO_EXTENSION);
+  
+          if($imageType != 'jpg' && $imageType != 'jpeg' && $imageType != 'png') {
+            echo "<script>alert('Image must be jpg, png, jpeg!')</script>";
+          }else {//image validation success
+            $name = $_POST['name'];
+            $desc = $_POST['description'];
+            $category = $_POST['category'];
+            $qty = $_POST['quantity'];
+            $price = $_POST['price'];
+            $image = $_FILES['image']['name'];
+  
+            move_uploaded_file($_FILES['image']['tmp_name'], $file);
+  
+            $stm = $pdo->prepare("
+              UPDATE product SET name=:name, description=:description, category_id=:category,
+              price=:price, quantity=:quantity, image=:image WHERE id = 
+            ". $_GET['id']);
+            $stm->bindParam(":name", $name);
+            $stm->bindParam(":description", $desc);
+            $stm->bindParam(":category", $category);
+            $stm->bindParam(":price", $price);
+            $stm->bindParam(":quantity", $qty);
+            $stm->bindParam(":image", $image);
+            
+            if ($stm->execute()) {
+              header("location: index.php");
+            }
           }
-        }
-      } else {
-          $name = $_POST['name'];
-          $desc = $_POST['description'];
-          $category = $_POST['category'];
-          $qty = $_POST['quantity'];
-          $price = $_POST['price'];
-
-          $stm = $pdo->prepare("
-            UPDATE product SET name=:name, description=:description, category_id=:category,
-            price=:price, quantity=:quantity WHERE id = 
-            ". $_GET['id'] );
-          $stm->bindParam(":name", $name);
-          $stm->bindParam(":description", $desc);
-          $stm->bindParam(":category", $category);
-          $stm->bindParam(":price", $price);
-          $stm->bindParam(":quantity", $qty);
-          
-          if ($stm->execute()) {
-            header("location: index.php");
+        } else {
+            $name = $_POST['name'];
+            $desc = $_POST['description'];
+            $category = $_POST['category'];
+            $qty = $_POST['quantity'];
+            $price = $_POST['price'];
+  
+            $stm = $pdo->prepare("
+              UPDATE product SET name=:name, description=:description, category_id=:category,
+              price=:price, quantity=:quantity WHERE id = 
+              ". $_GET['id'] );
+            $stm->bindParam(":name", $name);
+            $stm->bindParam(":description", $desc);
+            $stm->bindParam(":category", $category);
+            $stm->bindParam(":price", $price);
+            $stm->bindParam(":quantity", $qty);
+            
+            if ($stm->execute()) {
+              header("location: index.php");
+            }
           }
-        }
+      }
+      
       }
     }
   
